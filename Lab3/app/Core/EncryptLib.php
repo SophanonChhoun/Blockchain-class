@@ -19,7 +19,7 @@ class EncryptLib
     public static function decryptString($ciphertext, $key = null, $iv = null)
     {
         self::setKeyAndIv($key, $iv);
-        $str = openssl_decrypt(base64_decode($ciphertext), 'AES-256-CBC', self::$key, OPENSSL_RAW_DATA);
+        $str = openssl_decrypt(base64_decode($ciphertext), 'AES-256-CBC', self::$key, OPENSSL_RAW_DATA, self::$iv);
         return $str;
     }
 
