@@ -123,6 +123,9 @@ return [
 
     'cipher' => 'AES-256-CBC',
 
+    'encrypt_key' => env('APP_ENCRYPT_KEY', '12345678901234561234567890123456'),
+    'encrypt_iv' => env('APP_ENCRYPT_IV', '1234567890123456'),
+
     /*
     |--------------------------------------------------------------------------
     | Autoloaded Service Providers

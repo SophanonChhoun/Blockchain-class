@@ -5,11 +5,13 @@ namespace App\Core;
 class EncryptLib
 {
     private static $key;
+    private static $iv;
+
 
     public static function encryptString($plaintext, $key = null, $iv = null)
     {
         self::setKeyAndIv($key, $iv);
-        $ciphertext = openssl_encrypt($plaintext, "DES-EDE3", self::$key, OPENSSL_RAW_DATA);
+        $ciphertext = openssl_encrypt($plaintext, "AES-256-CBC", self::$key, OPENSSL_RAW_DATA, self::$iv);
 
         return base64_encode($ciphertext);
     }
@@ -17,7 +19,7 @@ class EncryptLib
     public static function decryptString($ciphertext, $key = null, $iv = null)
     {
         self::setKeyAndIv($key, $iv);
-        $str = openssl_decrypt(base64_decode($ciphertext), 'DES-EDE3', self::$key, OPENSSL_RAW_DATA);
+        $str = openssl_decrypt(base64_decode($ciphertext), 'AES-256-CBC', self::$key, OPENSSL_RAW_DATA);
         return $str;
     }
 
@@ -26,7 +28,13 @@ class EncryptLib
         if ($key) {
             self::$key =  $key;
         } else {
-            self::$key =  "1234567890123456";
+            self::$key = config('app.encrypt_key');
+        }
+
+        if ($iv) {
+            self::$iv = $iv;
+        } else {
+            self::$iv = config('app.encrypt_iv');
         }
     }
 }
