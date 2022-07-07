@@ -38,9 +38,9 @@ class EncryptionController extends Controller
 
     public function encryptFile()
     {
-        $file = base64_encode(file_get_contents(public_path("bros_sart.jpeg")));
+        $file = base64_encode(file_get_contents(public_path("secret-image.jpeg")));
         $ciphertext = EncryptLib::encryptString($file);
-        $file = Storage::disk('local')->get('bros_sart.jpeg');
+        $file = Storage::disk('local')->get('secret-image.jpeg');
         $ciphertextFile =
             EncryptLib::encryptString($file);
         return response()->json([
