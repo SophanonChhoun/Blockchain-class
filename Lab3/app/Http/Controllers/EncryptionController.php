@@ -38,11 +38,17 @@ class EncryptionController extends Controller
 
     public function encryptFile()
     {
-        $file = Storage::disk('local')->get('bros_sart.jpeg');
+        $file = base64_encode(file_get_contents(public_path("bros_sart.jpeg")));
         $ciphertext = EncryptLib::encryptString($file);
+        $file = Storage::disk('local')->get('bros_sart.jpeg');
+        $ciphertextFile =
+            EncryptLib::encryptString($file);
         return response()->json([
             'success' => true,
-            'data' => $ciphertext
+            'data' => [
+                'base64' => $ciphertext,
+                'content' => $ciphertextFile
+            ]
         ]);
     }
 
@@ -55,7 +61,7 @@ class EncryptionController extends Controller
         if (!is_dir($destinationPath)) {
             mkdir($destinationPath, 0777, true);
         }
-        File::put($destinationPath . $file, $plaintext);
+        file_put_contents($destinationPath . $file, base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $plaintext)));
         return response()->json([
             'success' => true,
             'message' => 'Success decrypt.'
