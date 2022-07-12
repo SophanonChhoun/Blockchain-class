@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\EncryptionController;
+use App\Http\Controllers\RSAController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -22,6 +23,10 @@ Route::group([
     Route::post('/decrypt', [EncryptionController::class, 'decrypt']);
     Route::get('/encrypt-file', [EncryptionController::class, 'encryptFile']);
     Route::post('/decrypt-file', [EncryptionController::class, 'decryptFile']);
+    Route::group(['prefix' => 'rsa'], function () {
+        Route::get('/generate-keys-pairs', [RSAController::class, 'generateKeysPairs']);
+        Route::get('/encrypt', [RSAController::class, 'encrypt']);
+    });
 });
 
 
